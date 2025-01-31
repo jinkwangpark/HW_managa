@@ -15,21 +15,21 @@ google api가 업데이트 하는 과정에서 사용자의 시트에 접속할 
      이 링크를 통해 인증키를 발급받을 수 있습니다.
 
   **구글 시트 인증 키 만드는 방법
-    google cloud 접속
-    make project (ex> name : holiwork-google-sheet)
-    enable API service
-    +enable apis and services
-    'google sheet api' search & click
-    Generate service accounting
-    create credencials
-    application data click
-    next
-    소유자
-    완료 click
-    사용자 인증정보 : 서비스계정 : 키
-    키추가 click : json make : json file local save
-    서비스 계정 : 세부정보 email복사
-    자기 구글 시트 고유에 email추가
+    google cloud 접속 -
+    make project (ex> name : holiwork-google-sheet) -
+    enable API service -
+    +enable apis and services -
+    'google sheet api' search & click -
+    Generate service accounting -
+    create credencials -
+    application data click -
+    next -
+    소유자 -
+    완료 click -
+    사용자 인증정보 : 서비스계정 : 키 -
+    키추가 click : json make : json file local save -
+    서비스 계정 : 세부정보 email복사 -
+    자기 구글 시트 고유에 email추가 -
 
 execution_time.json은 구글 시트를 업데이트한 시간을 기록하고 저장합니다.
 holiwork_managa.py는 저장된 시간 값을 가져와 다우오피스 db에서 
