@@ -223,7 +223,6 @@ class Holiwork_manager:
 
         except Exception as e:
             print("An error occurred first_sheet:", e)
-            print(f"Error: {e}")
             print(traceback.format_exc())
 
     def personal_sheet(self, data, sheet_titles, service):
