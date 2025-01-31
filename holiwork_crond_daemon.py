@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import subprocess  # 외부 스크립트 실행용
+from pathlib import Path
 from datetime import datetime
 
 
@@ -37,16 +38,22 @@ def daemonize():
 
             # 외부 스크립트 실행
             try:
+                venv_python = f"{Path(__file__).resolve().parent}/.venv/bin/python3.9"
+                script_path = f"{Path(__file__).resolve().parent}/holiwork_manager.py"
+                print("venv_python : ", venv_python)
+                print("script_path : ", script_path)
+
                 result = subprocess.run(
-                    ["/home/jinkwangpark/test/python/platform-linux/arch-x86_64/os-rocky-8.8/bin/myenv/bin/python3",
-                     "/home/jinkwangpark/test/holiwork_manager.py"],
+                    [venv_python, script_path],
                     capture_output=True,
                     text=True,
-                    check=True
+                    check=True,
                 )
                 log_file.write(f"[{datetime.now()}] Script output:\n{result.stdout}\n")
             except subprocess.CalledProcessError as e:
-                log_file.write(f"[{datetime.now()}] Error while executing your_script.py:\n{e.stderr}\n")
+                log_file.write(
+                    f"[{datetime.now()}] Error while executing your_script.py:\n{e.stderr}\n"
+                )
                 log_file.write(f"Return code: {e.returncode}\n")
 
             time.sleep(5)
