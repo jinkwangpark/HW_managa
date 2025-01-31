@@ -35,3 +35,7 @@ execution_time.json은 구글 시트를 업데이트한 시간을 기록하고 �
 holiwork_managa.py는 저장된 시간 값을 가져와 다우오피스 db에서 
 쿼리를 통해 document html정보를 가져올 때 시간값 이후의 정보만을 db에서
 가져올 수 있도록 쿼리 옵션을 추가합니다.
+
+holiwork_crond_daemon.py는 현재 폴더에 있는 .venv디렉토리의 python환경을 
+추적하여 가져옵니다.
+
