@@ -36,10 +36,10 @@ def execution_time_json(file_name="execution_time.json"):
                 print(f"Error in decorated function {func.__name__}: {e}")
                 print(traceback.format_exc())
 
-            # 새 실행 시간 저장
-            # new_execution_time = datetime.now().replace(microsecond=0).isoformat()
-            # with open(time_file, "w") as f:
-            #    json.dump({"last_execution_time": new_execution_time}, f)
+            #새 실행 시간 저장
+            new_execution_time = datetime.now().replace(microsecond=0).isoformat()
+            with open(time_file, "w") as f:
+               json.dump({"last_execution_time": new_execution_time}, f)
 
             return result
 

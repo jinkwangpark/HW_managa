@@ -1,61 +1,71 @@
 import os
 import sys
 import time
-import subprocess  # 외부 스크립트 실행용
+import subprocess
 from pathlib import Path
 from datetime import datetime
 
 
 def daemonize():
-    # 부모 프로세스를 종료하고 자식 프로세스 실행
-    pid = os.fork()
-    if pid > 0:
-        sys.exit()  # 부모 프로세스 종료
+    # 데몬 프로세스 생성
+    try:
+        pid = os.fork()
+        if pid > 0:
+            sys.exit(0)  # 부모 프로세스 종료
+    except OSError as e:
+        sys.stderr.write(f"Fork failed: {e}\n")
+        sys.exit(1)
 
-    # 새로운 세션 시작
+    # 새로운 세션 생성
     os.setsid()
-
-    # 다시 포크하여 완전히 독립된 프로세스 생성
-    pid = os.fork()
-    if pid > 0:
-        sys.exit()
-
-    # 작업 디렉토리 변경
-    os.chdir("/")
     os.umask(0)
+    os.chdir("/")
 
-    # 표준 입출력 스트림 닫기
+    # 표준 입출력 닫기
     sys.stdout.flush()
     sys.stderr.flush()
     sys.stdin.close()
 
-    # 백그라운드 작업
+    # 무한 루프로 주기적 작업 실행
     with open("/tmp/holiwork_daemon.log", "a") as log_file:
         while True:
-            # 로그 기록
-            log_file.write(f"[{datetime.now()}] Daemon is running...\n")
-            log_file.flush()
-
-            # 외부 스크립트 실행
             try:
-                venv_python = f"{Path(__file__).resolve().parent}/.venv/bin/python3.9"
-                script_path = f"{Path(__file__).resolve().parent}/holiwork_manager.py"
-                print("venv_python : ", venv_python)
-                print("script_path : ", script_path)
+                # 1. 로그 기록
+                log_entry = f"[{datetime.now()}] Daemon is running...\n"
+                log_file.write(log_entry)
+                log_file.flush()
+
+                # 2. 외부 스크립트 실행
+                venv_python = (
+                    Path(__file__).resolve().parent / ".venv" / "bin" / "python3"
+                )
+                script_path = Path(__file__).resolve().parent / "holiwork_manager.py"
+
+                if not venv_python.exists():
+                    raise FileNotFoundError(
+                        f"Python 가상 환경 경로 없음: {venv_python}"
+                    )
+                if not script_path.exists():
+                    raise FileNotFoundError(f"스크립트 경로 없음: {script_path}")
 
                 result = subprocess.run(
-                    [venv_python, script_path],
+                    [str(venv_python), str(script_path)],
                     capture_output=True,
                     text=True,
                     check=True,
                 )
-                log_file.write(f"[{datetime.now()}] Script output:\n{result.stdout}\n")
-            except subprocess.CalledProcessError as e:
-                log_file.write(
-                    f"[{datetime.now()}] Error while executing your_script.py:\n{e.stderr}\n"
-                )
-                log_file.write(f"Return code: {e.returncode}\n")
 
+                # 3. 실행 결과 로깅
+                log_file.write(f"[{datetime.now()}] Script output:\n{result.stdout}\n")
+
+            except subprocess.CalledProcessError as e:
+                error_msg = f"[{datetime.now()}] Script 실행 오류:\n{e.stderr}\nReturn Code: {e.returncode}\n"
+                log_file.write(error_msg)
+            except Exception as e:
+                error_msg = f"[{datetime.now()}] Unexpected error: {str(e)}\n"
+                log_file.write(error_msg)
+
+            # 4. 30초 대기 후 재실행
             time.sleep(5)
 
 
