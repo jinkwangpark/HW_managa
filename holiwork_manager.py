@@ -182,8 +182,10 @@ class Holiwork_manager:
 
                 if doc_status == "COMPLETE":
                     if form_distinction.startswith("[휴일근무]"):
+                        print(f"person_name: {person_name} : [휴일근무] 신청")
                         self.holiday_work(doc_body_id)
                     elif form_distinction.startswith("[대체휴무]"):
+                        print(f"person_name: {person_name} : [대체휴무] 신청")
                         self.alter_holiday(doc_body_id)
                 else:
                     print(f"Skipping person_name: {person_name} and document: {doc_body_id} with status: {doc_status}")
