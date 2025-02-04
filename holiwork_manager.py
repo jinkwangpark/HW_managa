@@ -175,6 +175,7 @@ class Holiwork_manager:
             for idx, row in enumerate(rows):
                 if idx >= 30000000000:
                     break
+                person_name = row[0]
                 doc_body_id = row[1]
                 form_distinction = row[5]
                 doc_status = row[8]
@@ -185,7 +186,7 @@ class Holiwork_manager:
                     elif form_distinction.startswith("[대체휴무]"):
                         self.alter_holiday(doc_body_id)
                 else:
-                    print(f"Skipping document {doc_body_id} with status: {doc_status}")
+                    print(f"Skipping person_name: {person_name} and document: {doc_body_id} with status: {doc_status}")
 
             self.cur.close()
             self.conn.close()
