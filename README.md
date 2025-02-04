@@ -39,3 +39,6 @@ holiwork_managa.py는 저장된 시간 값을 가져와 다우오피스 db에서
 holiwork_crond_daemon.py는 현재 폴더에 있는 .venv디렉토리의 python환경을 
 추적하여 가져옵니다.
 
+요구 파이썬 버전 == 3.9 ver
+ sudo dnf install python3.9 -y
+ python3.9 -m venv myenv
