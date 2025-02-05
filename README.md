@@ -42,3 +42,6 @@ holiwork_crond_daemon.py는 현재 폴더에 있는 .venv디렉토리의 python�
 요구 파이썬 버전 == 3.9 ver
  sudo dnf install python3.9 -y
  python3.9 -m venv myenv
+ 
+ ![folwchart](https://github.com/user-attachments/assets/644426b7-a68d-4e76-884b-7db0c12686af)
+
